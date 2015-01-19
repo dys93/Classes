@@ -65,6 +65,7 @@ void MapFactory::getMap(int mapnum)
 
 		createobject(0, 3, 0.5, 1.0 / 7);
 	}
+		break;
 	case 3:{//一股作气
 		initmoney = 500;
 		createobject(1, 3, 0.5, 6.0 / 7);
@@ -79,10 +80,37 @@ void MapFactory::getMap(int mapnum)
 
 	}
 		break;
+	case 4:{  //防御
+		createobject(1, 3, 0.5, 6.0 / 7);
+		createobject(1, 2, 0.5, 6.0 / 7 - 1.0 / 10);
+		createobject(1, 1, 0.5, 6.0 / 7 - 2.0 / 10);
+		createobject(1, 0, 0.5, 6.0 / 7 - 3.0 / 10);
+
+		for (int i = 1; i <= 9;i++)
+			createobject(2, 0, i/10.0, 0.5);
+
+		createobject(0, 0, 0.5, 1.0 / 7 + 3.0 / 10);
+		createobject(0, 1, 0.5, 1.0 / 7 + 2.0 / 10);
+		createobject(0, 2, 0.5, 1.0 / 7 + 1.0 / 10);
+		createobject(0, 3, 0.5, 1.0 / 7);
+		}
+		break;
+	case 5:{//入侵
+		createobject(1, 3, 0.5, 6.0 / 7);
+		createobject(0, 2, 0.5, 6.0 / 7 - 1.0 / 10);
+		createobject(0, 1, 0.5, 6.0 / 7 - 2.0 / 10);
+		createobject(0, 0, 0.5, 6.0 / 7 - 3.0 / 10);
+
+		for (int i = 1; i <= 9; i++)
+			createobject(2, 0, i / 10.0, 0.5);
+
+		createobject(1, 0, 0.5, 1.0 / 7 + 3.0 / 10);
+		createobject(1, 1, 0.5, 1.0 / 7 + 2.0 / 10);
+		createobject(1, 2, 0.5, 1.0 / 7 + 1.0 / 10);
+		createobject(0, 3, 0.5, 1.0 / 7);
 	}
-
-
-
+		break;
+	}
 }
 
 void MapFactory::MapLoad(GameScene *target)

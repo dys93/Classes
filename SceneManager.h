@@ -15,11 +15,14 @@ public:
 		CCScene *menuScene;
 		CCScene *gameScene;
 		CCScene *helpScene;
+		CCScene *resultScene;
 		//创建场景对象的方法
 		void createScene();
 		void goMenuLayer();
 		void goGameScene();
 		void goHelpLayer();
+		//1输
+		void goResultScene(int result);
 };
 
 

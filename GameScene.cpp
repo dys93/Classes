@@ -91,6 +91,10 @@ void GameScene::openMenuCallback()
 	CCLayer *mmm = this->createmenu();
 	this->myScene->addChild(mmm);
 	stoppMenu();
+	if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+	{
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/select.wav");
+	}
 }
 //未完成  战争迷雾效果
 CCLayer * GameScene::createshadelayer()
@@ -274,13 +278,15 @@ void GameScene::change_state_start_round()
 	{
 		CCLog("youwin");
 		Toast::makeText(this, "YOU WIN", 2.5f);
-		menuBackMenuCallback();
+		sm->goResultScene(0);
+		return;
 	}
 	if (my_total_spritenum == 0)
 	{
 		CCLog("youlost");
 		Toast::makeText(this, "YOU LOST", 2.5f);
-		menuBackMenuCallback();
+		sm->goResultScene(1);
+		return;
 	}
 	CCLog("start_round");
 	
@@ -501,8 +507,10 @@ MySprite* GameScene::create_ani(int b,int k, CCSize position)
 	this->addChild(firsttest );
 	AllSprite->addObject(firsttest);
 	firsttest->setPosition(position);
-	my_total_spritenum +=1- b;
-	enemy_total_spritenum += b;
+	if (b <= 1){
+		my_total_spritenum += 1 - b;
+		enemy_total_spritenum += b;
+	}
 	labelupdate();
 	return firsttest;
 }
@@ -579,8 +587,14 @@ EventListenerTouchOneByOne* GameScene::creatSpriteListener()
 			selSprite->besel(control_state);
 			change_state_sel();
 		}
-
-			
+		if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+		{
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/select.wav");
+		}
+		if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+		{
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/select.wav");
+		}
 	};
 	return listener1;
 }
@@ -695,7 +709,10 @@ EventListenerTouchOneByOne* GameScene::creatSpriteMenuListener()
 				break;
 			}
 		}
-
+		if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+		{
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/select.wav");
+		}
 	};
 	return listener1;
 }
@@ -830,9 +847,16 @@ void GameScene::update(float dt)
 						par->setGlobalZOrder(PrioGame::SpriteDiePar);
 						this->addChild(par);
 					}
-					my_total_spritenum -= 1 - tag / 100;
-					enemy_total_spritenum -= tag / 100;
+					if (tag / 100 != 2){
+						my_total_spritenum -= 1 - tag / 100;
+						enemy_total_spritenum -= tag / 100;
+					}
+					if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+					{
+						CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/dead.wav");
+					}
 				}
+				
 				AllSprite->removeObject(sp);
 			}
 		}
@@ -915,13 +939,19 @@ void GameScene::onEnter()
 				if ((sp1->belongto + myTurn) != 1 && control_state == g_attack)
 				{
 					//受到伤害
-					CCLog("hit");
+					if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+					{
+						CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/hit.mp3");
+					}
 					sp1->behurt();
 				}
 				if ((sp2->belongto + myTurn) != 1 && control_state == g_attack)
 				{
 					//受到伤害
-					CCLog("hit");
+					if (UserDefault::sharedUserDefault()->getIntegerForKey("effectFlag", 1) == 1)
+					{
+						CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("sound/hit.mp3");
+					}
 					sp2->behurt();
 				}
 			}

@@ -6,6 +6,7 @@
 #include "MenuLayer.h"
 #include "HelpLayer.h"
 #include "MapFactory.h"
+#include "ResultScene.h"
 using namespace cocos2d;
 //实现createScene方法
 void SceneManager::createScene()
@@ -40,7 +41,7 @@ void SceneManager::goGameScene()
 		gameScene->addChild(layer->createshadelayer(), 3);
 	}
 	MapFactory map;
-	map.getMap(3);
+	map.getMap(rand()%6);
 	map.MapLoad(layer);
 	//设置场景管理者
 	//controlLayer->sm = this;
@@ -49,6 +50,27 @@ void SceneManager::goGameScene()
 	//执行切换
 	CCDirector::sharedDirector()->replaceScene(ccts);
 	layer->change_state_start_day();
+}
+
+//result 1输
+void SceneManager::goResultScene(int result)
+{
+	//创建场景对象 
+	resultScene = CCScene::create();
+	//创建布景对象
+	resultScene = ResultScene::createScene();
+	auto* layer = ResultScene::create();
+	resultScene->retain();
+	layer->sm = this;
+	layer->myScene = resultScene;
+	layer->retain();
+	resultScene->addChild(layer, 2);
+	layer->statu(result);
+	//创建切换特效
+	CCTransitionScene* ccts = CCTransitionFade::create(0.8, resultScene, ccWHITE);
+	//执行切换
+	CCDirector::sharedDirector()->replaceScene(ccts);
+
 }
 void SceneManager::goMenuLayer()
 {

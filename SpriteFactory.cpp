@@ -11,15 +11,54 @@ MySprite* MySprite::creates(int belongto,int kind )
 {
 	//初始化数据
 	MySprite *wait = new MySprite();
-	string a = sprite_pic[belongto * 5 + kind] + ".png";
-	if (wait->initWithFile(sprite_pic[belongto * 5 + kind] + ".png"))
+	
+	if (belongto == 2)
+	{
+		wait->initWithFile("block.png");
+		
+		wait->sleep = CCSprite::create(sprite_pic_sleep[0] + ".png");
+		wait->addChild(wait->sleep);
+		//自身的数据设定
+		wait->setTag(belongto * 100 + kind * 10);
+		wait->ismenushow = false;
+		wait->setScale(0.3);
+		wait->setAnchorPoint(ccp(0, 0));
+		wait->kind = kind;
+		wait->belongto = belongto;
+		wait->hurt = false;
+		wait->Maxblood = 3;
+		wait->hasattck = false;
+		wait->hasmove = 0;
+		wait->Maxmove = 3;
+		wait->Maxspeed = 200;
+		wait->sleeptime = 0;
+		wait->menunum = 0;
+		PhysicsBody* body;
+		
+		body = PhysicsBody::createCircle(20);
+
+		body->getFirstShape()->setDensity(density);
+
+		body->setAngularDamping(0.85);
+		body->setLinearDamping(1);
+
+		body->setMass(15.0f);
+		body->setContactTestBitmask(0xFFFFFFFF);
+		body->setCollisionBitmask(0xFFFFFFFF);
+		body->setCategoryBitmask(0xFFFFFFFF);
+		wait->setPhysicsBody(body);
+		wait->addspeed(Vec2(0, 1));
+		wait->setOpacity(opac);
+		return wait;
+	}
+	else if (wait->initWithFile(sprite_pic[belongto * 5 + kind] + ".png"))
 	{
 		wait->sleep = CCSprite::create(sprite_pic_sleep[belongto]+".png");
 
 		wait->sleep->setVisible(false);
 		wait->sleep->setScale(0.6);
 		wait->sleep->setPosition(wait->getContentSize());
-		wait->setGlobalZOrder(PrioGame::SpriteSleep);
+		wait->sleep->setGlobalZOrder(PrioGame::SpriteSleep);
 		wait->addChild(wait->sleep);
 		
 		//自身的数据设定
@@ -224,12 +263,20 @@ CCParticleSystem * MySprite::die_animation()
 		particle->setEndColor(Color4F(0.9, 0.9, 0.9, 0.0));
 		particle->setEndColorVar(Color4F(0.1, 0.1, 0.1, 0.0));
 	}
-	else
+	else if (belongto == 1)
 	{
 		particle->setStartColor(Color4F(0.1, 0.1, 0.9, 0.9));
 		particle->setStartColorVar(Color4F(0.1, 0.1, 0.1, 0.1));
 
 		particle->setEndColor(Color4F(0.9, 0.9, 0.9, 0.0));
+		particle->setEndColorVar(Color4F(0.1, 0.1, 0.1, 0.0));
+	}
+	else if (belongto == 2)
+	{
+		particle->setStartColor(Color4F(0.5, 0.5, 0.5, 0.9));
+		particle->setStartColorVar(Color4F(0.1, 0.1, 0.1, 0.1));
+
+		particle->setEndColor(Color4F(0.5, 0.5, 0.5, 0.0));
 		particle->setEndColorVar(Color4F(0.1, 0.1, 0.1, 0.0));
 	}
 	

@@ -1,5 +1,5 @@
 #include "AppDelegate.h"
-
+#include <time.h>
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -35,7 +35,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	sm->createScene();
 	//告诉导演使用那个场景
 	director->runWithScene(sm->loadScene);
-
+	srand(time(0));
 
     //director->runWithScene(scene);
 

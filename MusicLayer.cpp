@@ -199,7 +199,7 @@ void  MusicLayer::menuCallbacKOpenMusic(CCObject* pSender)
 	//preferencecaoz²Ù×÷
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic
 		(
-		"sound/background.mp3",
+		"sound/background.wav",
 		true
 		);
 	LoadAndSave::SaveInt("musicFlag", 1);
