@@ -5,9 +5,9 @@
 #include "LoadLayer.h"
 #include "MenuLayer.h"
 #include "HelpLayer.h"
-
+#include "MapFactory.h"
 using namespace cocos2d;
-//实现TankSceneManager类中的createScene方法
+//实现createScene方法
 void SceneManager::createScene()
 {
 	//创建CCScene（场景）对象
@@ -39,14 +39,16 @@ void SceneManager::goGameScene()
 	{
 		gameScene->addChild(layer->createshadelayer(), 3);
 	}
-	
+	MapFactory map;
+	map.getMap(3);
+	map.MapLoad(layer);
 	//设置场景管理者
 	//controlLayer->sm = this;
 	//创建切换特效
 	CCTransitionScene* ccts = CCTransitionFade::create(0.8, gameScene, ccWHITE);
 	//执行切换
 	CCDirector::sharedDirector()->replaceScene(ccts);
-
+	layer->change_state_start_day();
 }
 void SceneManager::goMenuLayer()
 {

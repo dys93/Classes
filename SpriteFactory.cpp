@@ -44,13 +44,13 @@ MySprite* MySprite::creates(int belongto,int kind )
 		
 		wait->setOpacity(opac);
 
-		//设定战争阴影效果
-		if (UserDefault::sharedUserDefault()->getBoolForKey("openshade"), 1)
-		{
-			wait->breakshade = CCSprite::create("break_shade.png");
-			wait->breakshade->setScale(sprite_break_shade[kind]);
-			wait->breakshade->setBlendFunc(ccBlendFunc{ GL_DST_COLOR, GL_ZERO });
-		}
+		////设定战争阴影效果
+		//if (userdefault::shareduserdefault()->getboolforkey("openshade"), 1)
+		//{
+		//	wait->breakshade = ccsprite::create("break_shade.png");
+		//	wait->breakshade->setscale(sprite_break_shade[kind]);
+		//	wait->breakshade->setblendfunc(ccblendfunc{ gl_dst_color, gl_zero });
+		//}
 		//物理体积设定
 		PhysicsBody* body;
 		if (kind == 3)
@@ -232,7 +232,7 @@ CCParticleSystem * MySprite::die_animation()
 		particle->setEndColor(Color4F(0.9, 0.9, 0.9, 0.0));
 		particle->setEndColorVar(Color4F(0.1, 0.1, 0.1, 0.0));
 	}
-
+	
 	particle->setAutoRemoveOnFinish(true);
 	return particle;
 }
@@ -334,48 +334,9 @@ void MySprite::behurt()
 	if (hurt == false)
 	{
 		hurt = true;
-		CCParticleSystem *particle = NULL;
-		particle = CCParticleExplosion::create();
-		particle->retain();
-		particle->setTexture(CCTextureCache::sharedTextureCache()
-			->addImage("star.png"));
-
-		particle->setDuration(0.4);
-		particle->setEmissionRate(200);
-
-		particle->setSpeed(40);
-		particle->setSpeedVar(5);
-
-		particle->setStartSize(12);
-		particle->setStartSizeVar(2);
-
-		particle->setLife(1.0);
-		particle->setLifeVar(0.5);
-
-		particle->setEndSize(10);
-		particle->setEndSizeVar(2);
-		if (belongto == 0){
-			particle->setStartColor(Color4F(0.05, 0.05, 0.05, 0.95));
-			particle->setStartColorVar(Color4F(0.05, 0.05, 0.05, 0.05));
-
-			particle->setEndColor(Color4F(0.95, 0.95, 0.95, 0.0));
-			particle->setEndColorVar(Color4F(0.05, 0.05, 0.05, 0.0));
-
-		}
-		else
-		{
-			particle->setStartColor(Color4F(0.95, 0.95, 0.95, 0.95));
-			particle->setStartColorVar(Color4F(0.05, 0.05, 0.05, 0.05));
-
-			particle->setEndColor(Color4F(0.95, 0.95, 0.95, 0.0));
-			particle->setEndColorVar(Color4F(0.05, 0.05, 0.05, 0.0));
-		}
-		particle->setPosition(this->getPosition()/10);
-		particle->setAutoRemoveOnFinish(true);
-		particle->setGlobalZOrder(PrioGame::SpriteDiePar);
-		this->addChild(particle);
-
-
+		CCParticleSystem *par = this->die_animation();
+		par->setPosition(this->getPosition());
+		par->setGlobalZOrder(PrioGame::shade);
+		this->getParent()->addChild(par);
 	}
-
 }

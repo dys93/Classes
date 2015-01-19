@@ -1,18 +1,14 @@
 #include "GameScene.h"
 #include "SpriteFactory.h"
 #include "SceneManager.h"
+#include "Toast.h"
 Scene* GameScene::createScene()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::createWithPhysics();
 
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	
 	scene->getPhysicsWorld()->setGravity(Vect(0.0f, 0.0f));
-	// 'layer' is an autorelease object  
-
-	//添加gamelayer
-	
 
 	// return the scene  
 	return scene;
@@ -21,6 +17,7 @@ Scene* GameScene::createScene()
 bool GameScene::init()
 {
 	CCLog("init");
+
 	//////////////////////////////
 	// 1. super init first
 	if (!Layer::init())
@@ -39,7 +36,6 @@ bool GameScene::init()
 	
 	shade = NULL;
 	menu = NULL;
-	earn = 30;
 	labelcreate();
 	AllSprite = CCArray::create();
 	movingSprite = CCArray::create();
@@ -61,9 +57,6 @@ bool GameScene::init()
 	listener2->retain();
 	listener3->retain();
 	listener4->retain();
-
-	changemoney(+500);
-
 	control_state = g_begin;
 	//建立边界边框
 	auto edgeSp = Sprite::create();
@@ -84,22 +77,7 @@ bool GameScene::init()
 
 	//3个按钮控制回合以及呼出菜单
 	startpMenu();
-
-	
-	//调试的几个小棋子
-	create_ani(1,3, CCSizeMake(visibleSize.width / 2, visibleSize.height * (6.0/7) ));
-	create_ani(1,2, CCSizeMake(visibleSize.width / 2, visibleSize.height * (6.0 / 7 - 1.0 / 10) ));
-	create_ani(1,1, CCSizeMake(visibleSize.width / 2, visibleSize.height * (6.0 / 7 - 2.0 / 10) ));
-	create_ani(1,0, CCSizeMake(visibleSize.width / 2, visibleSize.height * (6.0 / 7 - 3.0 / 10) ));
-
-	create_ani(0,0, CCSizeMake(visibleSize.width / 2, visibleSize.height *(1.0 / 7 + 3.0 / 10) ));
-	create_ani(0,1, CCSizeMake(visibleSize.width / 2, visibleSize.height *(1.0 / 7 + 2.0 / 10) ));
-	create_ani(0,2, CCSizeMake(visibleSize.width / 2, visibleSize.height *(1.0 / 7 + 1.0 / 10) ));
-	create_ani(0,3, CCSizeMake(visibleSize.width / 2, visibleSize.height *(1.0/7)));
-	
 	labelupdate();
-	
-	change_state_start_day();
 
 	return true;
 
@@ -295,26 +273,31 @@ void GameScene::change_state_start_round()
 	if (enemy_total_spritenum == 0)
 	{
 		CCLog("youwin");
+		Toast::makeText(this, "YOU WIN", 2.5f);
 		menuBackMenuCallback();
 	}
 	if (my_total_spritenum == 0)
 	{
 		CCLog("youlost");
+		Toast::makeText(this, "YOU LOST", 2.5f);
 		menuBackMenuCallback();
 	}
 	CCLog("start_round");
+	
 	if (enemy_ready_spritenum<=0&&my_ready_spritenum<=0)
 	{
 		change_state_start_day();
 		return;
 	}
+	//Toast::makeText(this, "START ROUND", 2.5f);
 	int r = rand();
 	int m = (enemy_ready_spritenum > 0 ? enemy_ready_spritenum : 0 )+ (my_ready_spritenum > 0 ? my_ready_spritenum : 0);
 	myTurn = (r%m)< my_ready_spritenum;
 	if (myTurn)
 	{
 		startpMenu();
-		CCLog("yourturn");
+		CCLog("Your Turn");
+		Toast::makeText(this, "Your Turn", 2.5f);
 		//分发
 		//selSprite = NULL;
 		//control_state = g_begin;
@@ -601,9 +584,6 @@ EventListenerTouchOneByOne* GameScene::creatSpriteListener()
 	};
 	return listener1;
 }
-
-
-
 //精灵菜单
 void GameScene::startSpriteMenuListen()
 {
@@ -848,7 +828,6 @@ void GameScene::update(float dt)
 						CCParticleSystem *par = sp->die_animation();
 						par->setPosition(sp->getPosition());
 						par->setGlobalZOrder(PrioGame::SpriteDiePar);
-
 						this->addChild(par);
 					}
 					my_total_spritenum -= 1 - tag / 100;

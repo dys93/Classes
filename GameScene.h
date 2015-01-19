@@ -9,7 +9,7 @@
 #include "infor.h"
 
 USING_NS_CC;
-//为什么说是Scene 但都是Layer？
+
 class GameScene:public CCLayer
 {
 public:
@@ -59,7 +59,7 @@ public:
 	bool myTurn=true;       //交替轮回
 	int money=0;				//你的钱
 	void changemoney(int change);
-	int earn;
+	int earn=30;
 	int enemy_ready_spritenum=0;     //敌人可移动数量
 	int my_ready_spritenum=0;		//你的可移动数量
 	int enemy_total_spritenum=0;     //敌人可移动数量

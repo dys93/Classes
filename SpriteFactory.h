@@ -21,8 +21,6 @@ public:
 	CCParticleSystem * die_animation();
 	bool trydie();
 	
-
-
 	CCSprite *breakshade;
 	int hasmove;
 	int Maxmove;
